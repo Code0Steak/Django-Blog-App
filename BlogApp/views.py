@@ -1,0 +1,26 @@
+from django.shortcuts import render
+#from django.http import HttpResponse
+
+#dummy data
+dummyposts = [
+    {
+        'author': 'Ameya Keskar',
+        'title': 'I am done XD',
+        'content': 'This is my first ever blog post. I am going to write my heart out in this post. HAHAHAH.. That\'s it for today.',
+        'date': 'Today', 
+    },
+    {
+        'author': 'Mocha Pom',
+        'title': 'I have 1Mil on YT',
+        'content': 'I am a cute pomerian and I have 1mil on YT. What do you have? huh?!',
+        'date': 'Yesterday', 
+    },
+]
+
+# Create your views here.
+def home(request):
+    context = {'posts' : dummyposts}
+    return render(request, 'Blog/BlogHome.html', context)
+
+def about(request):
+    return render(request, 'Blog/BlogAbout.html', {'title': 'This is the title'})
