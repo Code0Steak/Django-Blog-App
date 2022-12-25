@@ -14,7 +14,7 @@ def registerUser(request):
             # messages.warning
             # messages.info
 
-            return redirect('blog-home')
+            return redirect('login')
     form = UserRegistrationForm()
     return render(request,'users/register.html', {'form' : form})
 
