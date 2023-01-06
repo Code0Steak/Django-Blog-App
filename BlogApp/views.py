@@ -2,6 +2,8 @@ from django.shortcuts import render
 #from django.http import HttpResponse
 from .models import Post
 
+from django.views.generic import ListView, DetailView, CreateView
+
 #dummy data
 # dummyposts = [
 #     {
@@ -22,6 +24,24 @@ from .models import Post
 def home(request):
     context = {'posts' : Post.objects.all()}
     return render(request, 'Blog/BlogHome.html', context)
+
+class PostListView(ListView):
+    model = Post
+
+    #after calling as_view() Dango will be looking for the following view, by default
+    #<appName>/<model>_<viewtype>.html
+    template_name = 'Blog/BlogHome.html'
+    context_object_name = 'posts'
+    ordering = ['-date_created'] #ordering of posts, based on date
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'Blog/post_detail.html'
+
+class PostCreateView(CreateView):
+    model = Post
+    fields = ['title', 'content']
+    template_name = 'Blog/post_form.html'
 
 def about(request):
     return render(request, 'Blog/BlogAbout.html', {'title': 'This is the title'})
