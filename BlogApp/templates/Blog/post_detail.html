@@ -8,6 +8,11 @@
       <p class="article-content">{{ object.content }}</p>
       <div class="article-metadata">
         <a class="mr-2" href="#"><img class="rounded-circle article-img" src={{object.author.profile.image.url}} alt="User Profile Pic.">{{ object.author}} | <small class="text-muted">{{ object.date_created|date:"F d, Y"}}</small></a>
+      {%if object.author == user%}
+        <a class = "btn btn-secondary btn-sm mt-1 mb-1" href="{%url 'post-update' object.id%}">Update Post</a>
+        <a class = "btn btn-danger" href="{%url 'post-delete' object.id%}">Delete</a>
+      {%endif%}
+      
       </div>
     </div>
 </article>
