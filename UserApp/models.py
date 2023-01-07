@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
-from django.urls import reverse
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE) #if the User is deleted the profile for the user will be gone. But not viceversa.
@@ -19,7 +19,6 @@ class Profile(models.Model):
             img.thumbnail(outputSize)
             img.save(self.image.path)
     
-    def get_absolute_url(self):
-        return reverse('post-detail', kwargs={'pk': self.pk})
+    
     
 

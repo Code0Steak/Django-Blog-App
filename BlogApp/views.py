@@ -2,9 +2,9 @@ from django.shortcuts import render
 #from django.http import HttpResponse
 from .models import Post
 
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
-from django.contrib.auth.mixins import LoginRequiredMixin 
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 #dummy data
 # dummyposts = [
@@ -49,6 +49,20 @@ class PostCreateView(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+class PostUpdateView(UserPassesTestMixin,LoginRequiredMixin,UpdateView):
+    model = Post
+    fields = ['title', 'content']
+    template_name = 'Blog/post_form.html'
+
+    #override the form_valid method, for setting post auther as current logged in user
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form) 
+
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
 
 def about(request):
     return render(request, 'Blog/BlogAbout.html', {'title': 'This is the title'})
