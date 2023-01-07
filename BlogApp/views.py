@@ -43,5 +43,10 @@ class PostCreateView(CreateView):
     fields = ['title', 'content']
     template_name = 'Blog/post_form.html'
 
+    #override the form_valid method, for setting post auther as current logged in user
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
 def about(request):
     return render(request, 'Blog/BlogAbout.html', {'title': 'This is the title'})
