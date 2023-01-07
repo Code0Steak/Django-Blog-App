@@ -4,6 +4,8 @@ from .models import Post
 
 from django.views.generic import ListView, DetailView, CreateView
 
+from django.contrib.auth.mixins import LoginRequiredMixin 
+
 #dummy data
 # dummyposts = [
 #     {
@@ -38,7 +40,7 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'Blog/post_detail.html'
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin,CreateView):
     model = Post
     fields = ['title', 'content']
     template_name = 'Blog/post_form.html'
