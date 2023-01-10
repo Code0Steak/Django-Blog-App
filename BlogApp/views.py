@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 #from django.http import HttpResponse
 from .models import Post
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-
+from django.contrib.auth.models import User
 #dummy data
 # dummyposts = [
 #     {
@@ -35,7 +35,24 @@ class PostListView(ListView):
     template_name = 'Blog/BlogHome.html'
     context_object_name = 'posts'
     ordering = ['-date_created'] #ordering of posts, based on date
-    paginate_by = 2
+    paginate_by = 4
+
+
+class UserPostListView(ListView):
+    model = Post
+
+    #after calling as_view() Dango will be looking for the following view, by default
+    #<appName>/<model>_<viewtype>.html
+    template_name = 'Blog/User_BlogHome.html'
+    context_object_name = 'posts'
+    #ordering = ['-date_created'] #ordering of posts, based on date
+    paginate_by = 4
+
+    #override
+    def get_queryset(self):
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Post.objects.filter(author=user).order_by('-date_created')
+
 class PostDetailView(DetailView):
     model = Post
     template_name = 'Blog/post_detail.html'
